@@ -12,3 +12,21 @@ Logs/
 
 # Fichier solution (généré automatiquement)
 *.sln
+
+# JetBrains IDEs
+.idea/             # configuration du projet (workspace, modules, etc)
+*.iml              # modules IDEA/Rider
+*.iws              # ancien format de workspace
+*.ipr              # ancien projet IDEA
+
+# (optionnel) dossiers de build CMake/CLion
+cmake-build-*/     
+out/               # parfois utilisé par certains plugins
+
+# caches et dossiers temporaires
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/shelf/    
+
+# (si vous ouvrez des solutions .NET dans Rider)
+*.sln.iml  
