@@ -14,14 +14,14 @@ Logs/
 *.sln
 
 # JetBrains IDEs
-.idea/             # configuration du projet (workspace, modules, etc)
-*.iml              # modules IDEA/Rider
-*.iws              # ancien format de workspace
-*.ipr              # ancien projet IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
 
 # (optionnel) dossiers de build CMake/CLion
 cmake-build-*/     
-out/               # parfois utilisé par certains plugins
+out/
 
 # caches et dossiers temporaires
 .idea/**/workspace.xml
