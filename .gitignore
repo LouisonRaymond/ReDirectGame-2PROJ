@@ -3,3 +3,12 @@
 [Oo]bj/
 [Bb]uild/
 [Uu]ser[Ss]ettings/
+
+# Logs Unity (consoles, shader compiler, etc)
+Logs/
+
+# Paramètres d'éditeur VSCode
+.vscode/
+
+# Fichier solution (généré automatiquement)
+*.sln
