@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
-//using UnityEngine.UI;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,8 @@ public class SettingsMenu : MonoBehaviour
 
     public TMP_Dropdown resolutionDropdown;
 
+    public Toggle fullscreenToggle;
+    
     Resolution[] _resolutions;
 
 
@@ -37,11 +39,18 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+        
+        fullscreenToggle.isOn = Screen.fullScreen;
     }
 
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("SoundVolume", volume);
+    }
+    
+    public void SetVolumeEffects(float volume)  
+    {
+        audioMixer.SetFloat("EffectsVolume", volume);
     }
 
     public void SetFullscreen(bool isFullscreen)

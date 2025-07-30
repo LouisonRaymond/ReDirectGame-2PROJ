@@ -4,7 +4,9 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
     public GameObject settingsWindow;
+    public GameObject rulesWindow;
     private bool _isSettingsOpen;
+    private bool _isRulesOpen;
 
     public void StartGame()
     {
@@ -28,6 +30,26 @@ public class MainMenu : MonoBehaviour
         // Activate the settings menu
         _isSettingsOpen = !_isSettingsOpen;
         settingsWindow.SetActive(_isSettingsOpen);
+
+        // If rules are open, close them
+        if (_isRulesOpen)
+        {
+            rulesWindow.SetActive(false);
+            _isRulesOpen = false;
+        }
+    }
+
+    public void OpenRules()
+    {
+        _isRulesOpen = !_isRulesOpen;
+        rulesWindow.SetActive(_isRulesOpen);
+        
+        // If settings are open, close them
+        if (_isSettingsOpen) 
+        {
+            settingsWindow.SetActive(false);
+            _isSettingsOpen = false;
+        }
     }
 
 }
