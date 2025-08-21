@@ -760,6 +760,13 @@ public class LevelEditorController : MonoBehaviour
             if (d < best) { best = d; target = plc; }
         }
         if (target == null) return;
+        
+        // si l’objet est autorisé mais n’a pas (ou plus) Rotatable → on le remet
+        if (IsRotatableKey(target.data?.prefabKey ?? target.name) &&
+            target.GetComponent<Rotatable>() == null)
+        {
+            target.gameObject.AddComponent<Rotatable>();
+        }
 
         var rot = target.GetComponent<Rotatable>();
         if (rot != null)

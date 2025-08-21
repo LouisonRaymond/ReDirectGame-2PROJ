@@ -54,7 +54,9 @@ public class BallRunner : MonoBehaviour
                 {
                     _notifiedEnd = true;
                     _running = false; // stop locomotion pour éviter spam
-                    LevelEditorController.Instance.OnBallOutOfBounds(this);
+                    PlaySceneController.Instance?.OnBallOutOfBounds(this);
+                    LevelEditorController.Instance?.OnBallOutOfBounds(this);
+                    enabled = false; // coupe Update tout de suite après l’event
                 }
             }
         }
@@ -74,7 +76,13 @@ public class BallRunner : MonoBehaviour
     }
 
     // Contrôle
-    public void StartRun()  { dir = Vector2.down; _running = true; }
+    public void StartRun()
+    {
+        dir = Vector2.down;
+        _notifiedEnd = false;  // ← important
+        _running = true;
+        enabled = true;        // au cas où
+    }
     public void StopRun()   { _running = false; }
 
     // Helpers

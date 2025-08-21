@@ -1,11 +1,24 @@
 // Assets/Scripts/UI/PopupService.cs
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public class PopupService : MonoBehaviour
 {
     public static PopupService Instance { get; private set; }
 
     [SerializeField] private PopupPanel popup;   // réf. au panel dans ton Canvas
+    
+    struct Req {
+        public string title, msg, actionText;
+        public PopupType type;
+        public float autoClose;
+        public Action onClosed, onAction;
+        public bool hasAction;
+    }
+
+    Queue<Req> _queue = new();
+    bool _showing;
 
     void Awake()
     {
@@ -36,6 +49,40 @@ public class PopupService : MonoBehaviour
     public void Hide()
     {
         if (IsOpen) popup.Hide();
+    }
+    
+    // NOUVEAU: message avec bouton
+    public void ShowWithAction(string title, string msg, string actionText, Action onAction,
+        PopupType type = PopupType.Info)
+    {
+        Enqueue(new Req{ title=title, msg=msg, type=type, actionText=actionText, onAction=onAction, hasAction=true });
+        TryShowNext();
+    }
+    
+    void Enqueue(Req r) => _queue.Enqueue(r);
+
+    void TryShowNext()
+    {
+        if (_showing || popup == null) return;
+        if (_queue.Count == 0) return;
+
+        var r = _queue.Dequeue();
+        _showing = true;
+
+        if (r.hasAction)
+            popup.ShowWithAction(r.title, r.msg, r.type, r.actionText, () => {
+                _showing = false;
+                r.onAction?.Invoke();
+                TryShowNext();
+            }, OnClosed);
+        else
+            popup.Show(r.title, r.msg, r.type, r.autoClose, OnClosed);
+    }
+
+    void OnClosed()
+    {
+        _showing = false;
+        TryShowNext();
     }
 
     // Helpers pratiques

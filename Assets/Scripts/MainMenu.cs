@@ -1,29 +1,26 @@
 using UnityEngine;
-//using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject settingsWindow;
     [SerializeField] private GameObject rulesWindow;
     [SerializeField] private GameObject makeALevelWindow;
+    [SerializeField] private GameObject playWindow;
     private bool _isSettingsOpen;
     private bool _isRulesOpen;
     private bool _isMakeALevelOpen;
+    private bool _isPlayOpen;
 
     public void StartGame()
     {
-        // Load the game scene (assuming it's named "GameScene")
         //UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
     }
 
     public void QuitGame()
     {
-        // Quit the application
         Application.Quit();
-
-        // If running in the editor, stop playing
         #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
         #endif
     }
 
@@ -34,7 +31,8 @@ public class MainMenu : MonoBehaviour
         settingsWindow.SetActive(false);
         rulesWindow.SetActive(false);
         makeALevelWindow.SetActive(false);
-        _isSettingsOpen = _isRulesOpen = _isMakeALevelOpen = false;
+        playWindow.SetActive(false);
+        _isSettingsOpen = _isRulesOpen = _isMakeALevelOpen = _isPlayOpen = false;
 
         if (willOpen)
         {
@@ -46,6 +44,8 @@ public class MainMenu : MonoBehaviour
 
             if (panelToToggle == makeALevelWindow)
                 makeALevelWindow.GetComponentInChildren<LevelBrowser>(true)?.Refresh();
+
+            // Ajoute ici la logique spécifique à playWindow si besoin
         }
 
         // AudioManager.Instance?.PlayUiClick();
@@ -54,5 +54,5 @@ public class MainMenu : MonoBehaviour
     public void OpenSettings()   => ShowOnly(settingsWindow,   ref _isSettingsOpen);
     public void OpenRules()      => ShowOnly(rulesWindow,      ref _isRulesOpen);
     public void OpenMakeALevel() => ShowOnly(makeALevelWindow, ref _isMakeALevelOpen);
-
+    public void OpenPlay()       => ShowOnly(playWindow,       ref _isPlayOpen);
 }

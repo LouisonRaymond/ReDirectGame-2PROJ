@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public enum PopupType { Info, Success, Warning, Error }
 
@@ -25,11 +26,26 @@ public class PopupPanel : MonoBehaviour
 
     Coroutine _anim;
     System.Action _onClosed;
+    
+             // ton panneau (fond)
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI bodyText;
+    
+    
+    [Header("Action Button (optionnel)")]
+    public Button actionButton;          // ← drag ici un bouton “Suivant”
+    public TextMeshProUGUI actionLabel;  // ← son label (TMP)
+    Action _onAction;
+    float _autoClose;
+    bool _showing;
 
     void Awake()
     {
         if (closeButton) closeButton.onClick.AddListener(Hide);
         gameObject.SetActive(false);
+        if (actionButton) actionButton.onClick.AddListener(OnActionClicked);
+        
+        HideActionButton();
     }
 
     public void Show(string t, string b, PopupType type = PopupType.Info, float autoClose = 0f, System.Action onClosed = null)
@@ -39,6 +55,8 @@ public class PopupPanel : MonoBehaviour
 
         title.text = t;
         body.text  = b;
+        
+        HideActionButton();
 
         // couleur d'accent simple via PanelBG
         Color c = type switch
@@ -109,5 +127,66 @@ public class PopupPanel : MonoBehaviour
         _onClosed?.Invoke();
         _onClosed = null;
         _anim = null;
+    }
+    
+    // NOUVEAU: avec bouton d’action
+    public void ShowWithAction(string title, string msg, PopupType type,
+        string actionText, Action onAction,
+        Action onClosed)
+    {
+        _onClosed = onClosed;
+        _onAction = onAction;
+        _autoClose = 0f; // pas d’autoclose si bouton
+        _showing = true;
+
+        if (titleText) titleText.text = title;
+        if (bodyText)  bodyText.text  = msg;
+
+        if (actionButton)
+        {
+            actionButton.gameObject.SetActive(true);
+            if (actionLabel) actionLabel.text = actionText;
+        }
+
+        gameObject.SetActive(true);
+        layer.alpha = 1f;
+        layer.blocksRaycasts = true;
+        layer.interactable = true;
+
+        StopAllCoroutines();
+    }
+
+    System.Collections.IEnumerator AutoClose(float t)
+    {
+        yield return new WaitForSecondsRealtime(t);
+        Close();
+    }
+
+    void OnActionClicked()
+    {
+        var cb = _onAction; // éviter race
+        Close();
+        cb?.Invoke();
+    }
+
+    public void Close()
+    {
+        if (!_showing) return;
+        _showing = false;
+        
+        HideActionButton();
+
+        layer.blocksRaycasts = false;
+        layer.interactable = false;
+        gameObject.SetActive(false);
+
+        var cb = _onClosed; _onClosed = null; _onAction = null;
+        cb?.Invoke();
+    }
+    
+    void HideActionButton()
+    {
+        if (actionButton) actionButton.gameObject.SetActive(false);
+        _onAction = null;
     }
 }
