@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject settingsWindow;
-    public GameObject rulesWindow;
+    [SerializeField] private GameObject settingsWindow;
+    [SerializeField] private GameObject rulesWindow;
+    [SerializeField] private GameObject makeALevelWindow;
     private bool _isSettingsOpen;
     private bool _isRulesOpen;
+    private bool _isMakeALevelOpen;
 
     public void StartGame()
     {
@@ -25,31 +27,32 @@ public class MainMenu : MonoBehaviour
         #endif
     }
 
-    public void OpenSettings()
+    private void ShowOnly(GameObject panelToToggle, ref bool stateFlag)
     {
-        // Activate the settings menu
-        _isSettingsOpen = !_isSettingsOpen;
-        settingsWindow.SetActive(_isSettingsOpen);
+        bool willOpen = !stateFlag;
 
-        // If rules are open, close them
-        if (_isRulesOpen)
+        settingsWindow.SetActive(false);
+        rulesWindow.SetActive(false);
+        makeALevelWindow.SetActive(false);
+        _isSettingsOpen = _isRulesOpen = _isMakeALevelOpen = false;
+
+        if (willOpen)
         {
-            rulesWindow.SetActive(false);
-            _isRulesOpen = false;
+            panelToToggle.SetActive(true);
+            stateFlag = true;
+
+            if (panelToToggle == settingsWindow)
+                settingsWindow.GetComponentInChildren<SettingsMenu>(true)?.RefreshAudioUI();
+
+            if (panelToToggle == makeALevelWindow)
+                makeALevelWindow.GetComponentInChildren<LevelBrowser>(true)?.Refresh();
         }
+
+        // AudioManager.Instance?.PlayUiClick();
     }
 
-    public void OpenRules()
-    {
-        _isRulesOpen = !_isRulesOpen;
-        rulesWindow.SetActive(_isRulesOpen);
-        
-        // If settings are open, close them
-        if (_isSettingsOpen) 
-        {
-            settingsWindow.SetActive(false);
-            _isSettingsOpen = false;
-        }
-    }
+    public void OpenSettings()   => ShowOnly(settingsWindow,   ref _isSettingsOpen);
+    public void OpenRules()      => ShowOnly(rulesWindow,      ref _isRulesOpen);
+    public void OpenMakeALevel() => ShowOnly(makeALevelWindow, ref _isMakeALevelOpen);
 
 }

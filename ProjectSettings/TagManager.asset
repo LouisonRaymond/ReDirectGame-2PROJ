@@ -41,8 +41,14 @@ TagManager:
   - name: Particle
     uniqueID: 2540235301
     locked: 0
+  - name: Background
+    uniqueID: 312710733
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: FX
+    uniqueID: 4157110701
     locked: 0
   m_RenderingLayers:
   - Default
