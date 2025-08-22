@@ -252,16 +252,7 @@ public class PlaySceneController : MonoBehaviour
         foreach (var st in elementsParent.GetComponentsInChildren<StarPickup>(true))
             st.gameObject.SetActive(true);
         
-        _spawnRenderers.Clear();
-        foreach (var marker in elementsParent.GetComponentsInChildren<SpawnMarker>(true))
-        {
-            foreach (var r in marker.GetComponentsInChildren<Renderer>(true))
-            {
-                if (!r.enabled) continue;
-                r.enabled = false;
-                _spawnRenderers.Add(r);
-            }
-        }
+        HideSpawnRenderers();
 
         // reset runtime…
         _starsCollected = 0;
@@ -292,6 +283,8 @@ public class PlaySceneController : MonoBehaviour
     {
         if (_runtimeBall) { var r = _runtimeBall.GetComponent<BallRunner>(); if (r) r.StopRun(); Destroy(_runtimeBall); _runtimeBall = null; }
         _running = false;
+        
+        ShowSpawnRenderers();
 
         foreach (var s in elementsParent.GetComponentsInChildren<StarPickup>(true)) s.gameObject.SetActive(true);
         foreach (var b in elementsParent.GetComponentsInChildren<BreakableOnce>(true)) b.Restore();
@@ -350,6 +343,7 @@ public class PlaySceneController : MonoBehaviour
         else
         {
             RestoreStars();
+            ShowSpawnRenderers(); 
             AudioManager.Instance?.PlayFail();
             PopupService.Instance?.Error("Raté", "Il faut toutes les étoiles.");
             if (startButton) startButton.SetActive(true);
@@ -363,15 +357,13 @@ public class PlaySceneController : MonoBehaviour
         _running = false;
         
         RestoreStars();
+        ShowSpawnRenderers();           // ← ré-affiche le BallSpawn
         AudioManager.Instance?.PlayFail();
         PopupService.Instance?.Error("Hors écran", "Réessaie !");
         Shake(0.25f, 0.35f);
+
         if (startButton) startButton.SetActive(true);
         if (stopButton)  stopButton.SetActive(false);
-        
-        foreach (var r in _spawnRenderers) if (r) r.enabled = true;
-        _spawnRenderers.Clear();
-        RestoreStars();
     }
 
     // ---------------- Progression ----------------
@@ -430,5 +422,26 @@ public class PlaySceneController : MonoBehaviour
             PlayerPrefs.SetInt(PROG_KEY, levelIndex);
             PlayerPrefs.Save();
         }
+    }
+    
+    // Cache/affiche tous les renderers marqués SpawnMarker pendant la run
+    void HideSpawnRenderers()
+    {
+        _spawnRenderers.Clear();
+        foreach (var marker in elementsParent.GetComponentsInChildren<SpawnMarker>(true))
+        {
+            foreach (var r in marker.GetComponentsInChildren<Renderer>(true))
+            {
+                if (!r.enabled) continue;
+                r.enabled = false;
+                _spawnRenderers.Add(r);
+            }
+        }
+    }
+
+    void ShowSpawnRenderers()
+    {
+        foreach (var r in _spawnRenderers) if (r) r.enabled = true;
+        _spawnRenderers.Clear();
     }
 }

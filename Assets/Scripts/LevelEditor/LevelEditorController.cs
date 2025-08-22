@@ -65,6 +65,8 @@ public class LevelEditorController : MonoBehaviour
     private bool IsRotatableKey(string key) => !_nonRotatableKeys.Contains(key);
     
     [SerializeField] private NamePromptPanel namePrompt;
+    
+    
 
     void Awake()
     {
@@ -271,6 +273,8 @@ public class LevelEditorController : MonoBehaviour
                         // --- SUPPRESSION CLASSIQUE ---
                         if (target.data != null)
                             currentLevelData.elements.RemoveAll(e => e.guid == target.data.guid);
+                        
+                        
                         Destroy(target.gameObject);
                     }
                 }
@@ -284,8 +288,15 @@ public class LevelEditorController : MonoBehaviour
     // --- Placement effectif ---
     private void PlaceSelected(Vector3 pos, Quaternion rot)
     {
+        var cell = new Vector2Int(
+            Mathf.RoundToInt(pos.x / cellSize),
+            Mathf.RoundToInt(pos.y / cellSize)
+        );
+        
         var go = Instantiate(_prefabDict[_selectedKey], pos, rot, elementsParent);
         go.name = _selectedKey;
+        
+        
 
         // Layer pour la suppression (root + enfants)
         int placeableLayer = LayerMask.NameToLayer(placeableLayerName);
@@ -324,6 +335,8 @@ public class LevelEditorController : MonoBehaviour
         // --- Téléporteur : pairing en 2 poses ---
         if (_selectedKey == "Teleporter")
         {
+            
+            
             var tel = go.GetComponent<TeleporterElement>();
             if (tel == null) tel = go.AddComponent<TeleporterElement>();
 
@@ -339,6 +352,7 @@ public class LevelEditorController : MonoBehaviour
 
                 // ne ferme PAS la preview : oblige à poser le 2e
                 currentLevelData.elements.Add(data);
+                
                 return;
             }
             else
@@ -361,7 +375,7 @@ public class LevelEditorController : MonoBehaviour
 
                 // ajouter les données du 2e
                 currentLevelData.elements.Add(data);
-
+                
                 // reset état de pairing
                 _pendingTelePairId = null;
                 _pendingTeleFirst = null;
@@ -376,7 +390,7 @@ public class LevelEditorController : MonoBehaviour
 
         plc.data = data;
         currentLevelData.elements.Add(data);
-
+        
         ClearPreview();
         _selectedKey = null;
         currentTool = Tool.Place;

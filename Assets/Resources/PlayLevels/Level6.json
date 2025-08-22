@@ -1,0 +1,209 @@
+{
+    "levelName": "Level6",
+    "elements": [
+        {
+            "guid": "2587e72d-3bac-47d0-b623-f897f9b18f76",
+            "prefabKey": "BallSpawn",
+            "gridPos": {
+                "x": 0,
+                "y": 4
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "8def9914-dfab-44d4-bc4f-27aa04d7d612",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": 0,
+                "y": 3
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "496ec975-58eb-4caa-9a61-de98eb10c625",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": 0,
+                "y": 2
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "286d04b2-9dd3-4834-84d8-6d9bbe675937",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": 0,
+                "y": 1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "25c713da-1156-44b0-af62-54d736478271",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -7,
+                "y": 2
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "79cef86b-61ca-4364-972a-66c0403b69c1",
+            "prefabKey": "EndPoint",
+            "gridPos": {
+                "x": 3,
+                "y": 2
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "cba3366f-59da-4d9c-bd78-fb2d00342837",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": 0,
+                "y": -1
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "004a06bf-6da4-4fbc-a8c9-55ca26b7fbd5",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -1,
+                "y": 0
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "1923ceb9-9bb2-4c9c-bd44-0bca4ca853da",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -1,
+                "y": -1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "f2a96510-0b1f-4b06-b45a-71da2ff2c64f",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -2,
+                "y": 0
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "0d679cb8-6c99-4aab-bee5-43b421190982",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -2,
+                "y": -1
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "0bc030f4-7221-47ff-b1ec-a283e4005664",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -3,
+                "y": -1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "49389051-a044-42dd-9f08-d0d80f3c084e",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -3,
+                "y": 0
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "f84803e6-2a70-44b0-ab85-f63e4f04b25e",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -4,
+                "y": -1
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "43089c53-eddd-4f93-8936-faadb0c075ec",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -4,
+                "y": 0
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "cfdd8726-0f49-43b7-b9a0-7c7ae0cc397e",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -5,
+                "y": -1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "65174002-6412-433c-95e9-11c21a69fef4",
+            "prefabKey": "LineOneUse",
+            "gridPos": {
+                "x": -5,
+                "y": 2
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        }
+    ]
+}

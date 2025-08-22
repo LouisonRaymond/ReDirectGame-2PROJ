@@ -1,0 +1,281 @@
+{
+    "levelName": "Level8",
+    "elements": [
+        {
+            "guid": "942421a4-af38-4e27-b4bf-b6a872fa5363",
+            "prefabKey": "EndPoint",
+            "gridPos": {
+                "x": -6,
+                "y": 3
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "19ef1b1e-575d-49db-bc4e-f6588d7d9a9a",
+            "prefabKey": "BallSpawn",
+            "gridPos": {
+                "x": 0,
+                "y": 4
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "9cb282fb-c5f1-41e3-96e9-48744cb92fec",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 0,
+                "y": 3
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "e0e3786d-30ed-49c9-b041-e872c66f4c44",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 0,
+                "y": 2
+            },
+            "rotationSteps": 3,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "b68a825b-cf30-4b56-ab00-3fa2506bd056",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": 1,
+                "y": 3
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "17f30b47-1b6d-4b90-b39b-10954db9d8d2",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": 1,
+                "y": 2
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "df0b4c12-c995-4cc2-a119-aac801d7433d",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 2,
+                "y": 2
+            },
+            "rotationSteps": 2,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "251baace-e7b1-42e2-bf83-4863fddef8cc",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 2,
+                "y": 1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "12be3407-e13f-4a78-b860-f2a84cd2e6b3",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 3,
+                "y": 1
+            },
+            "rotationSteps": 2,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "3d95fa4c-795d-4df2-b17d-e524e15db966",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 2,
+                "y": 0
+            },
+            "rotationSteps": 3,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "de811c3f-566c-40d9-9383-548fc8a9104a",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 3,
+                "y": 0
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "750ad54a-7424-4bea-b0b1-60b35115e590",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 2,
+                "y": -1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "f2be2d4f-97fd-49d3-a304-7582f7d7608f",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 0,
+                "y": -1
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "fdc37dea-4146-41bb-ab9b-0189f37a3268",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": 3,
+                "y": -1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "2179b2e5-d988-4c4d-ab79-d66cd129d752",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 5,
+                "y": -1
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "2529d6f2-98d9-4ec5-b737-469ea68fdc8a",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 5,
+                "y": 0
+            },
+            "rotationSteps": 3,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "b6843888-424c-4948-910c-2fd9466af896",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 5,
+                "y": 1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "e6f31266-6460-4f78-941c-c609906c48f6",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": -6,
+                "y": -1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "038ec289-70fa-404e-9696-da47e76d08c3",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 5,
+                "y": 2
+            },
+            "rotationSteps": 3,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "44b89e3d-f27d-4f5c-ac42-da05237e91d2",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 6,
+                "y": 2
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "aac5090a-47c3-4465-bf8b-430e4106061a",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 6,
+                "y": 3
+            },
+            "rotationSteps": 2,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "3c3c5ccb-b68a-47cd-be2f-65db7af5f03f",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 6,
+                "y": 0
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "a122b1bc-b4db-4d1c-a10c-5c4016e6b3f2",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 6,
+                "y": 1
+            },
+            "rotationSteps": 2,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        }
+    ]
+}

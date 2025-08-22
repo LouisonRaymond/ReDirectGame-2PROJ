@@ -24,25 +24,33 @@ public class BallRunner : MonoBehaviour
         col.isTrigger = true;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!_running) return;
 
-        // déplacement pur dans la direction
-        _rb.MovePosition(_rb.position + dir * (speed * Time.deltaTime));
+        // prochain point
+        Vector2 next = _rb.position + dir * (speed * Time.fixedDeltaTime);
 
-        // cooldown anti-retrigger
+        // verrouille l'axe perpendiculaire au mouvement
+        if (Mathf.Abs(dir.x) > 0.5f)       // horizontal -> force Y sur la ligne
+            next.y = RoundToLane(_rb.position.y);
+        else                               // vertical -> force X sur la colonne
+            next.x = RoundToLane(_rb.position.x);
+
+        _rb.MovePosition(next);
+
+        // cooldown anti-retrigger (inchangé)
         if (_cooldown.Count > 0)
         {
             var keys = new List<Collider2D>(_cooldown.Keys);
             foreach (var k in keys)
             {
-                _cooldown[k] -= Time.deltaTime;
+                _cooldown[k] -= Time.fixedDeltaTime;
                 if (_cooldown[k] <= 0f) _cooldown.Remove(k);
             }
         }
-        
-        // Fin si hors écran (viewport)
+
+        // sortie d'écran (tolérante)
         if (!_notifiedEnd)
         {
             var cam = Camera.main;
@@ -53,10 +61,11 @@ public class BallRunner : MonoBehaviour
                     vp.y < -viewportMargin || vp.y > 1f + viewportMargin)
                 {
                     _notifiedEnd = true;
-                    _running = false; // stop locomotion pour éviter spam
+                    _running = false;
+
                     PlaySceneController.Instance?.OnBallOutOfBounds(this);
                     LevelEditorController.Instance?.OnBallOutOfBounds(this);
-                    enabled = false; // coupe Update tout de suite après l’event
+                    enabled = false; // coupe tout de suite
                 }
             }
         }
@@ -79,23 +88,29 @@ public class BallRunner : MonoBehaviour
     public void StartRun()
     {
         dir = Vector2.down;
-        _notifiedEnd = false;  // ← important
+        _notifiedEnd = false;
         _running = true;
-        enabled = true;        // au cas où
+        enabled = true;
+        SnapToAxisCenter(); // démarre bien centré
     }
     public void StopRun()   { _running = false; }
 
     // Helpers
     public void SetDirection(Vector2 newDir)
     {
-        // Snap aux 4 axes
         if (Mathf.Abs(newDir.x) > Mathf.Abs(newDir.y))
             dir = new Vector2(Mathf.Sign(newDir.x), 0f);
         else
             dir = new Vector2(0f, Mathf.Sign(newDir.y));
+
+        SnapToAxisCenter(); // ← important
     }
 
-    public void TeleportTo(Vector3 worldPos) => _rb.position = worldPos;
+    public void TeleportTo(Vector3 worldPos)
+    {
+        _rb.position = worldPos;
+        SnapToAxisCenter();
+    }
     
     // Ajoute/force un cooldown pour un collider donné
     public void AddColliderCooldown(Collider2D col, float seconds)
@@ -115,4 +130,19 @@ public class BallRunner : MonoBehaviour
     
     [SerializeField] private float viewportMargin = 0.05f; // tolérance
     private bool _notifiedEnd = false;
+    
+    [SerializeField] public float cellSize = 1f;   // même valeur que ton éditeur/jeu
+    [SerializeField] private float snapTolerance = 0.03f; // marge pour snap "dur"
+
+    float RoundToLane(float v) => Mathf.Round(v / cellSize) * cellSize;
+
+    void SnapToAxisCenter()
+    {
+        var p = _rb.position;
+        if (Mathf.Abs(dir.x) > 0.5f)       // on va à gauche/droite
+            p.y = RoundToLane(p.y);
+        else                               // on va en haut/bas
+            p.x = RoundToLane(p.x);
+        _rb.position = p;
+    }
 }

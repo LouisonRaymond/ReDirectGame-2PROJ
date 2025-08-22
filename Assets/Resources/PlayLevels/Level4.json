@@ -1,0 +1,161 @@
+{
+    "levelName": "Level4",
+    "elements": [
+        {
+            "guid": "09a8366a-cf91-49df-acaa-6b5512eb050a",
+            "prefabKey": "BallSpawn",
+            "gridPos": {
+                "x": -1,
+                "y": 4
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "d2980e12-3334-469a-a42d-1b4fd90a9ef3",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 3,
+                "y": 3
+            },
+            "rotationSteps": 3,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "b72f9ce4-19e8-4583-ad7a-a0189cebb646",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 3,
+                "y": 2
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "18441277-2c40-4264-acf1-ab9ce3029efa",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 5,
+                "y": 3
+            },
+            "rotationSteps": 2,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "361d7a98-55cd-4995-b673-16a67e99671d",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": 5,
+                "y": 2
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "fc3730ee-ab07-4e2b-b1fb-46703edc29f8",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": 5,
+                "y": -1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "1fbe8547-668e-424f-bc3d-9d4cc5c68dde",
+            "prefabKey": "EndPoint",
+            "gridPos": {
+                "x": 4,
+                "y": -1
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "a80a9a02-a8c7-4075-9171-00346b3aecc7",
+            "prefabKey": "Arrow",
+            "gridPos": {
+                "x": -7,
+                "y": 3
+            },
+            "rotationSteps": 3,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "d23f250c-91ee-4609-9e56-8e26022ca84b",
+            "prefabKey": "Triangle",
+            "gridPos": {
+                "x": -7,
+                "y": -1
+            },
+            "rotationSteps": 2,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "f9358471-9272-45f7-9420-4c09540818e4",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": -7,
+                "y": 0
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "abfc41f3-13d6-4d26-b384-c8a13a5e35ce",
+            "prefabKey": "Star",
+            "gridPos": {
+                "x": 1,
+                "y": 2
+            },
+            "rotationSteps": 0,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "06ce0a5f-a1ec-425c-bd50-9ea62358714d",
+            "prefabKey": "LineSpawnable",
+            "gridPos": {
+                "x": -7,
+                "y": 2
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "5238ff77-d35b-401d-9cef-cce40a66a0e6",
+            "prefabKey": "Line",
+            "gridPos": {
+                "x": -1,
+                "y": 3
+            },
+            "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        }
+    ]
+}
