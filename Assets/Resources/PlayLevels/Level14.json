@@ -98,30 +98,6 @@
             "pairId": ""
         },
         {
-            "guid": "4a53509f-5f4e-44df-bbca-9591f3f4abf3",
-            "prefabKey": "Teleporter",
-            "gridPos": {
-                "x": 5,
-                "y": 0
-            },
-            "rotationSteps": 0,
-            "isBreakable": false,
-            "isActivable": false,
-            "pairId": "98f19b0c-4a12-4a64-8aeb-cc47e43d57f5"
-        },
-        {
-            "guid": "9e909199-376e-4da9-af7b-b48bc53c7bb8",
-            "prefabKey": "Teleporter",
-            "gridPos": {
-                "x": -7,
-                "y": 3
-            },
-            "rotationSteps": 0,
-            "isBreakable": false,
-            "isActivable": false,
-            "pairId": "98f19b0c-4a12-4a64-8aeb-cc47e43d57f5"
-        },
-        {
             "guid": "def7bc7a-3721-4a34-9b6e-ce33cc72b91f",
             "prefabKey": "Teleporter",
             "gridPos": {
