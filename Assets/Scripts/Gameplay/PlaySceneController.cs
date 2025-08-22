@@ -383,8 +383,7 @@ public class PlaySceneController : MonoBehaviour
             ShowSpawnRenderers(); 
             AudioManager.Instance?.PlayFail();
             PopupService.Instance?.Error("Raté", "Il faut toutes les étoiles.");
-            if (startButton) startButton.SetActive(true);
-            if (stopButton)  stopButton.SetActive(false);
+            ResetAfterRun(showSpawn: true);
         }
     }
 
@@ -398,6 +397,8 @@ public class PlaySceneController : MonoBehaviour
         AudioManager.Instance?.PlayFail();
         PopupService.Instance?.Error("Hors écran", "Réessaie !");
         Shake(0.25f, 0.35f);
+        
+        ResetAfterRun(showSpawn: true);
 
         if (startButton) startButton.SetActive(true);
         if (stopButton)  stopButton.SetActive(false);
@@ -480,5 +481,27 @@ public class PlaySceneController : MonoBehaviour
     {
         foreach (var r in _spawnRenderers) if (r) r.enabled = true;
         _spawnRenderers.Clear();
+    }
+    
+    void RestoreBreakablesAndActivables()
+    {
+        foreach (var b in elementsParent.GetComponentsInChildren<BreakableOnce>(true))
+            b.Restore();
+        foreach (var a in elementsParent.GetComponentsInChildren<Activable>(true))
+            a.ResetRuntimeState();
+    }
+
+    void ResetAfterRun(bool showSpawn)
+    {
+        // étoiles remises
+        RestoreStars();
+        // éléments restaurés
+        RestoreBreakablesAndActivables();
+        // spawns ré-affichés si demandé
+        if (showSpawn) ShowSpawnRenderers();
+
+        _running = false;
+        if (startButton) startButton.SetActive(true);
+        if (stopButton)  stopButton.SetActive(false);
     }
 }
