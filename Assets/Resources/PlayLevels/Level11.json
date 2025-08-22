@@ -128,7 +128,7 @@
                 "x": -2,
                 "y": 1
             },
-            "rotationSteps": 1,
+            "rotationSteps": 2,
             "isBreakable": false,
             "isActivable": false,
             "pairId": ""
@@ -146,25 +146,13 @@
             "pairId": ""
         },
         {
-            "guid": "afce678b-db69-41d5-a0e1-d6b52a732097",
-            "prefabKey": "Line",
-            "gridPos": {
-                "x": -7,
-                "y": 1
-            },
-            "rotationSteps": 0,
-            "isBreakable": false,
-            "isActivable": false,
-            "pairId": ""
-        },
-        {
             "guid": "f8f7135f-378d-4efd-bf26-b72cc3f4d6b8",
             "prefabKey": "Triangle",
             "gridPos": {
                 "x": -7,
                 "y": -2
             },
-            "rotationSteps": 1,
+            "rotationSteps": 0,
             "isBreakable": false,
             "isActivable": false,
             "pairId": ""
@@ -188,7 +176,7 @@
                 "x": -5,
                 "y": -2
             },
-            "rotationSteps": 1,
+            "rotationSteps": 2,
             "isBreakable": false,
             "isActivable": false,
             "pairId": ""
@@ -200,7 +188,7 @@
                 "x": -5,
                 "y": -3
             },
-            "rotationSteps": 0,
+            "rotationSteps": 1,
             "isBreakable": false,
             "isActivable": false,
             "pairId": ""
@@ -212,7 +200,31 @@
                 "x": -5,
                 "y": 1
             },
+            "rotationSteps": 3,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "26d68973-9a16-4506-bef2-3c6c53f826ab",
+            "prefabKey": "Line",
+            "gridPos": {
+                "x": -7,
+                "y": 3
+            },
             "rotationSteps": 1,
+            "isBreakable": false,
+            "isActivable": false,
+            "pairId": ""
+        },
+        {
+            "guid": "7203e18c-191e-4369-93a6-6f626c9384a8",
+            "prefabKey": "Line",
+            "gridPos": {
+                "x": -6,
+                "y": -3
+            },
+            "rotationSteps": 0,
             "isBreakable": false,
             "isActivable": false,
             "pairId": ""
