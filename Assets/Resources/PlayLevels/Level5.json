@@ -134,30 +134,6 @@
             "pairId": ""
         },
         {
-            "guid": "863460ab-7065-4e93-b97e-19dad9d9c528",
-            "prefabKey": "Teleporter",
-            "gridPos": {
-                "x": 3,
-                "y": -1
-            },
-            "rotationSteps": 0,
-            "isBreakable": false,
-            "isActivable": false,
-            "pairId": "3d539c9c-657f-441b-8bbe-8b8b0a8d4fbe"
-        },
-        {
-            "guid": "1321db3b-a825-4b52-af54-8e8c1b8516d0",
-            "prefabKey": "Teleporter",
-            "gridPos": {
-                "x": 3,
-                "y": -1
-            },
-            "rotationSteps": 0,
-            "isBreakable": false,
-            "isActivable": false,
-            "pairId": "3d539c9c-657f-441b-8bbe-8b8b0a8d4fbe"
-        },
-        {
             "guid": "c36912fb-00e0-4c52-942f-5c0c6d19f7dd",
             "prefabKey": "Line",
             "gridPos": {
