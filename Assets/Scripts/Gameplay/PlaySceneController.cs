@@ -72,6 +72,30 @@ public class PlaySceneController : MonoBehaviour
 
     void Start()
     {
+        // --- MODE DISQUE (depuis LevelBrowser) ---
+        if (!string.IsNullOrEmpty(PlayBridge.diskPathToLoad))
+        {
+            var data = LevelIO.Load(PlayBridge.diskPathToLoad);
+            if (data == null)
+            {
+                PopupService.Instance?.Error("Illisible", "Fichier de niveau introuvable/corrompu.");
+                return;
+            }
+
+            _data = data;
+            BuildFromData(_data);
+            RandomizeRotatables();
+            ResolveTeleporters();
+
+            _starsNeeded = elementsParent.GetComponentsInChildren<StarPickup>(true).Length;
+            _starsCollected = 0;
+
+            // En mode “disque”, pas de progression campagne :
+            startButton?.SetActive(true);
+            stopButton?.SetActive(false);
+            return;
+        }
+        
         // Charger la data depuis Resources/PlayLevels/<PlayBridge.levelResourceName>.json
         if (string.IsNullOrEmpty(PlayBridge.levelResourceName))
         {
@@ -307,7 +331,20 @@ public class PlaySceneController : MonoBehaviour
         _running = false;
 
         if (win)
-        {
+        {   
+            
+            // Mode disque (depuis LevelBrowser) => pas de progression campagne
+            if (!string.IsNullOrEmpty(PlayBridge.diskPathToLoad) || PlayBridge.levelIndex < 0)
+            {
+                PopupService.Instance?.ShowWithAction(
+                    "Niveau terminé",
+                    "Bravo !",
+                    "Retour menu",
+                    () => SceneManager.LoadScene(mainMenuSceneName),
+                    PopupType.Success
+                );
+                return;
+            }
             AudioManager.Instance?.PlayGoal();
 
             // On regarde s'il y a un prochain niveau

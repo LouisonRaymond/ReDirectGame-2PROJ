@@ -4,11 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class LevelBrowser : MonoBehaviour
 {
-    [SerializeField] Transform content;      // parent des items
-    [SerializeField] LevelListItem itemPrefab;
+    [SerializeField] Transform content;          // parent des items
+    [SerializeField] LevelListItem itemPrefab;   // ton prefab d’item (avec bouton Play)
     [SerializeField] string levelEditorSceneName = "LevelEditor";
-    
-    [SerializeField] GameObject emptyState;      // <- ton texte "Aucun niveau"
+    [SerializeField] GameObject emptyState;      // texte "Aucun niveau"
 
     List<GameObject> _spawned = new();
 
@@ -20,14 +19,14 @@ public class LevelBrowser : MonoBehaviour
         _spawned.Clear();
 
         var levels = LevelIO.GetAllLevels();
-        
-        // toggle message vide
+
         if (emptyState) emptyState.SetActive(levels.Count == 0);
-        
+
         foreach (var li in levels)
         {
             var item = Instantiate(itemPrefab, content);
-            item.Init(li, OnEditClicked, OnDeleteClicked);
+            // ⬇️ on passe aussi le callback Play
+            item.Init(li, OnEditClicked, OnDeleteClicked, OnPlayClicked);
             _spawned.Add(item.gameObject);
         }
     }
@@ -41,14 +40,18 @@ public class LevelBrowser : MonoBehaviour
 
     void OnDeleteClicked(LevelIO.LevelInfo info)
     {
-        // confirmation rapide via ton PopupService
-        PopupService.Instance?.Warn("Supprimer ce niveau ?",
-            $"« {info.name} » sera définitivement supprimé.",
-            0f);
-        // Si tu veux un vrai bouton Oui/Non, on peut faire un Popup de confirmation.
-        // Pour rester simple ici, on supprime directement :
+        // Ici tu supprimes direct. Si tu veux une vraie confirmation, on peut brancher un Popup Oui/Non.
         LevelIO.Delete(info.fullPath);
         Refresh();
+    }
+
+    void OnPlayClicked(LevelIO.LevelInfo info)
+    {
+        // Lancer la PlayScene depuis un fichier disque (pas la campagne Resources)
+        PlayBridge.diskPathToLoad = info.fullPath;
+        PlayBridge.levelResourceName = null;
+        PlayBridge.levelIndex = -1; // signale "hors campagne"
+        SceneManager.LoadScene("PlayScene");
     }
 
     // Bouton "Nouveau niveau"
@@ -58,4 +61,3 @@ public class LevelBrowser : MonoBehaviour
         SceneManager.LoadScene(levelEditorSceneName);
     }
 }
-

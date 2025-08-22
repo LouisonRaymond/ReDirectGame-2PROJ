@@ -50,18 +50,6 @@
             "pairId": ""
         },
         {
-            "guid": "e8f1a896-c27e-4aaa-8521-e475a64386d9",
-            "prefabKey": "LineOneUse",
-            "gridPos": {
-                "x": 0,
-                "y": 1
-            },
-            "rotationSteps": 1,
-            "isBreakable": false,
-            "isActivable": false,
-            "pairId": ""
-        },
-        {
             "guid": "7d4c7caf-e56b-4c3d-8fe3-d41fc110ca40",
             "prefabKey": "TriangleOneUse",
             "gridPos": {
