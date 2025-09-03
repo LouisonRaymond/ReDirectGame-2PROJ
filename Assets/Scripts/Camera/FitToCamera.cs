@@ -1,4 +1,3 @@
-// Assets/Scripts/FX/FitToCamera.cs
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]

@@ -15,7 +15,6 @@ public class UIButtonSfx : MonoBehaviour, IPointerEnterHandler
         var btn = GetComponent<Button>();
         if (btn) btn.onClick.AddListener(PlayClick);
         
-        // Si Toggle/Dropdown/Slider → jouer le son à la validation
         var t = GetComponent<Toggle>();
         if (t) t.onValueChanged.AddListener(_ => PlayClick());
 

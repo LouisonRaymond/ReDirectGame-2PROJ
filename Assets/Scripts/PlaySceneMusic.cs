@@ -1,4 +1,3 @@
-// PlaySceneMusic.cs
 using UnityEngine;
 public class PlaySceneMusic : MonoBehaviour
 {

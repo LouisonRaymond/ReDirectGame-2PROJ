@@ -7,17 +7,16 @@ using UnityEngine.SceneManagement;
 public class LevelEditorController : MonoBehaviour
 {
     public static LevelEditorController Instance { get; private set; }
-
-    // --- Outils ---
+    
     public enum Tool { Place, Delete }
     public Tool currentTool = Tool.Place;
 
-    [Header("Références")]
+    [Header("Refs")]
     public Camera editorCamera;
     public float cellSize = 1f;
-    public Transform elementsParent; // Empty sous LevelEditorRoot pour organiser les objets
+    public Transform elementsParent; 
 
-    [Header("Tous les Prefabs")]
+    [Header("Prefabs")]
     public GameObject LinePrefab;
     public GameObject LineOneUsePrefab;
     public GameObject LineSpawnablePrefab;
@@ -30,18 +29,17 @@ public class LevelEditorController : MonoBehaviour
     public GameObject EndPointPrefab;
     public GameObject BallSpawnPrefab;
 
-    [Header("Layers / Delete")]
-    public LayerMask placeableMask;                 // Layer "Placeable" pour la suppression
-    public string placeableLayerName = "Placeable"; // Appliqué aux instances posées
+    [Header("Layers")]
+    public LayerMask placeableMask;                 
+    public string placeableLayerName = "Placeable"; 
 
-    [Header("Données du niveau")]
+    [Header("Data")]
     public LevelData currentLevelData = new LevelData();
 
     [Header("Playtest")]
-    public GameObject ballRuntimePrefab;     // Prefab de la balle (BallRunner + Collider2D isTrigger)
-    public GameObject stopTestButton;        // Bouton UI "Stop" activé pendant le test
-
-    // internes
+    public GameObject ballRuntimePrefab;     
+    public GameObject stopTestButton;        
+    
     private Dictionary<string, GameObject> _prefabDict;
     private string _selectedKey;
     private GameObject _previewObj;
@@ -56,9 +54,9 @@ public class LevelEditorController : MonoBehaviour
     private readonly System.Collections.Generic.List<BreakableOnce> _brokenDuringTest = new();
     
     [Header("Rules")]
-    public bool requireExactlyThreeStars = true; // par défaut: 3 étoiles obligatoires
+    public bool requireExactlyThreeStars = true; 
     
-    // Éléments qui ne doivent JAMAIS tourner
+    
     private readonly System.Collections.Generic.HashSet<string> _nonRotatableKeys =
         new System.Collections.Generic.HashSet<string> { "EndPoint", "BallSpawn", "Teleporter", "Star" };
 
@@ -72,8 +70,7 @@ public class LevelEditorController : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
-
-        // Dico clés -> prefabs
+        
         _prefabDict = new Dictionary<string, GameObject>()
         {
             {"Line", LinePrefab},
@@ -103,13 +100,12 @@ public class LevelEditorController : MonoBehaviour
 
     void Update()
     {
-        // Autoriser Escape pour stopper même en test
         if (_isPlaytesting && Input.GetKeyDown(KeyCode.Escape))
         {
             OnStopTestClicked();
             return;
         }
-        // En playtest : on bloque l'édition
+        
         if (_isPlaytesting) return;
 
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
@@ -121,14 +117,14 @@ public class LevelEditorController : MonoBehaviour
             return;
         }
         
-        // clic droit : si pas de preview en cours -> rotation de l'objet sous le curseur
+        
         if (_previewObj == null && Input.GetMouseButtonDown(1) && currentTool != Tool.Delete)
         {
             TryRotateExistingAtCursor();
-            return; // évite d'autres traitements ce frame
+            return; 
         }
 
-        // --- Tool.Place ---
+        
         if (!string.IsNullOrEmpty(_selectedKey))
         {
             Vector3 worldPos = editorCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -138,22 +134,22 @@ public class LevelEditorController : MonoBehaviour
                 0f
             );
 
-            // Crée le preview si besoin
+            
             if (_previewObj == null)
             {
                 _previewObj = Instantiate(_prefabDict[_selectedKey], elementsParent);
-                SetPreviewAlpha(_previewObj, 0.5f); // preview semi-transparent
+                SetPreviewAlpha(_previewObj, 0.5f); 
             }
             
             _previewObj.transform.position = snapped;
 
-            // Rotation à la molette ou clic droit (UNIQUEMENT si l'élément est autorisé)
+            
             if (IsRotatableKey(_selectedKey) && (Input.GetMouseButtonDown(1) || Mathf.Abs(Input.mouseScrollDelta.y) > 0f))
             {
                 _previewObj.transform.Rotate(0, 0, 90);
             }
 
-            // Placement au clic gauche
+            
             if (Input.GetMouseButtonDown(0))
             {
                 PlaceSelected(snapped, _previewObj.transform.rotation);
@@ -163,7 +159,7 @@ public class LevelEditorController : MonoBehaviour
     
     void Start()
     {
-        // si on vient du browser
+        
         if (!string.IsNullOrEmpty(LevelBridge.pathToLoad))
         {
             var data = LevelIO.Load(LevelBridge.pathToLoad);
@@ -171,19 +167,19 @@ public class LevelEditorController : MonoBehaviour
             {
                 LoadLevelData(data);
                 currentLevelData.levelName = data.levelName;
-                LevelBridge.currentPath = LevelBridge.pathToLoad; // pour SaveOverwrite
+                LevelBridge.currentPath = LevelBridge.pathToLoad; 
             }
             else
             {
                 PopupService.Instance?.Error("Impossible Loading", "File Unreadable.");
             }
-            LevelBridge.pathToLoad = null; // consommer
+            LevelBridge.pathToLoad = null; 
         }
     }
 
     
 
-    // --- Palette ---
+    
     public void SelectPrefab(string key)
     {
         ClearPreview();
@@ -191,7 +187,7 @@ public class LevelEditorController : MonoBehaviour
         _selectedKey = key;
     }
 
-    // --- Delete ---
+    
     public void ToggleDeleteMode()
     {
         if (currentTool != Tool.Delete)
@@ -210,15 +206,14 @@ public class LevelEditorController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 p = editorCamera.ScreenToWorldPoint(Input.mousePosition);
-
-            // Tolérant : d'abord au point, puis petit rayon
+            
             Collider2D[] hits = Physics2D.OverlapPointAll(p, placeableMask);
             if (hits == null || hits.Length == 0)
                 hits = Physics2D.OverlapCircleAll(p, cellSize * 0.35f, placeableMask);
 
             if (hits != null && hits.Length > 0)
             {
-                // Remonte au Placeable le plus proche
+                
                 Placeable target = null;
                 foreach (var h in hits)
                 {
@@ -231,13 +226,10 @@ public class LevelEditorController : MonoBehaviour
                     var tel = target.GetComponent<TeleporterElement>();
                     if (tel != null)
                     {
-                        // --- SUPPRESSION D'UNE PAIRE DE TÉLÉPORTEURS ---
-
-                        // On prépare la liste des deux extrémités
+                        
                         var toDelete = new System.Collections.Generic.List<Placeable>();
                         toDelete.Add(target);
-
-                        // Trouve l'autre extrémité : d'abord via pairId, sinon via le lien runtime 'paired'
+                        
                         TeleporterElement otherTel = null;
 
                         if (!string.IsNullOrEmpty(tel.pairId))
@@ -258,8 +250,7 @@ public class LevelEditorController : MonoBehaviour
                             var otherPlc = otherTel.GetComponent<Placeable>();
                             if (otherPlc != null) toDelete.Add(otherPlc);
                         }
-
-                        // Supprime des données + détruit les deux objets
+                        
                         foreach (var plc in toDelete)
                         {
                             if (plc == null) continue;
@@ -270,7 +261,6 @@ public class LevelEditorController : MonoBehaviour
                     }
                     else
                     {
-                        // --- SUPPRESSION CLASSIQUE ---
                         if (target.data != null)
                             currentLevelData.elements.RemoveAll(e => e.guid == target.data.guid);
                         
@@ -284,8 +274,7 @@ public class LevelEditorController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             currentTool = Tool.Place;
     }
-
-    // --- Placement effectif ---
+    
     private void PlaceSelected(Vector3 pos, Quaternion rot)
     {
         var cell = new Vector2Int(
@@ -297,18 +286,16 @@ public class LevelEditorController : MonoBehaviour
         go.name = _selectedKey;
         
         
-
-        // Layer pour la suppression (root + enfants)
         int placeableLayer = LayerMask.NameToLayer(placeableLayerName);
         if (placeableLayer >= 0)
             SetLayerRecursively(go, placeableLayer);
 
-        // S’assure qu’un collider existe pour la suppression ET le playtest
+        
         var col = go.GetComponentInChildren<Collider2D>();
         if (col == null) col = go.AddComponent<BoxCollider2D>();
-        col.isTrigger = true; // le playtest se fait par OnTriggerEnter2D
+        col.isTrigger = true; 
 
-        // Lien scène <-> données
+        
         var plc = go.GetComponent<Placeable>();
         if (plc == null) plc = go.AddComponent<Placeable>();
 
@@ -325,14 +312,13 @@ public class LevelEditorController : MonoBehaviour
             isActivable = false
         };
         
-        // Rendre l'objet rotatable uniquement si autorisé
+        
         if (IsRotatableKey(_selectedKey))
         {
             if (go.GetComponent<Rotatable>() == null) go.AddComponent<Rotatable>();
         }
         
         
-        // --- Téléporteur : pairing en 2 poses ---
         if (_selectedKey == "Teleporter")
         {
             
@@ -342,27 +328,26 @@ public class LevelEditorController : MonoBehaviour
 
             if (string.IsNullOrEmpty(_pendingTelePairId))
             {
-                // 1er téléporteur : crée ID, teinte, reste en mode placement Teleporter
+                
                 _pendingTelePairId = System.Guid.NewGuid().ToString();
                 data.pairId = _pendingTelePairId;
                 tel.pairId = _pendingTelePairId;
                 tel.SetTint(ColorForPair(_pendingTelePairId));
 
                 _pendingTeleFirst = plc;
-
-                // ne ferme PAS la preview : oblige à poser le 2e
+                
                 currentLevelData.elements.Add(data);
                 
                 return;
             }
             else
             {
-                // 2e téléporteur : même ID, teinte, relie les 2
+                
                 data.pairId = _pendingTelePairId;
                 tel.pairId = _pendingTelePairId;
                 tel.SetTint(ColorForPair(_pendingTelePairId));
 
-                // relier en scène
+                
                 var firstTel = _pendingTeleFirst != null
                     ? _pendingTeleFirst.GetComponent<TeleporterElement>()
                     : null;
@@ -373,14 +358,14 @@ public class LevelEditorController : MonoBehaviour
                     tel.paired = firstTel;
                 }
 
-                // ajouter les données du 2e
+                
                 currentLevelData.elements.Add(data);
                 
-                // reset état de pairing
+                
                 _pendingTelePairId = null;
                 _pendingTeleFirst = null;
 
-                // cette fois, on peut fermer la preview
+                
                 ClearPreview();
                 _selectedKey = null;
                 currentTool = Tool.Place;
@@ -411,12 +396,12 @@ public class LevelEditorController : MonoBehaviour
         }
     }
 
-    // --- Save ---
+    
     public void OnSaveClicked()
     {
         Debug.Log("[LevelEditor] OnSaveClicked");
 
-        // Écrasement si on édite un fichier existant
+        
         if (!string.IsNullOrEmpty(LevelBridge.currentPath) && System.IO.File.Exists(LevelBridge.currentPath))
         {
             LevelIO.SaveOverwrite(currentLevelData, LevelBridge.currentPath);
@@ -424,7 +409,7 @@ public class LevelEditorController : MonoBehaviour
             return;
         }
 
-        // Nouveau fichier : si panel présent -> demander un nom
+        
         if (namePrompt != null)
         {
             string suggested = string.IsNullOrWhiteSpace(currentLevelData.levelName)
@@ -436,9 +421,9 @@ public class LevelEditorController : MonoBehaviour
                 {
                     currentLevelData.levelName = givenName;
                     LevelIO.Save(currentLevelData);
-                    PopupService.Instance?.Success("Sauvegardé", $"« {givenName} » enregistré.", 1.2f);
+                    PopupService.Instance?.Success("Save", $"« {givenName} » Saved.", 1.2f);
                 },
-                onCancel: () => { /* rien */ }
+                onCancel: () => {  }
             );
         }
         else
@@ -450,7 +435,7 @@ public class LevelEditorController : MonoBehaviour
 
             Debug.LogWarning("[LevelEditor] namePrompt est null -> sauvegarde avec nom auto: " + currentLevelData.levelName);
             LevelIO.Save(currentLevelData);
-            PopupService.Instance?.Success("Sauvegardé", $"« {currentLevelData.levelName} » enregistré.", 1.2f);
+            PopupService.Instance?.Success("Saved", $"« {currentLevelData.levelName} » Saved.", 1.2f);
         }
     }
 
@@ -458,8 +443,7 @@ public class LevelEditorController : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
-
-    // --- Playtest ---
+    
     public void OnTestClicked()
     {
         if (_isPlaytesting) return;
@@ -500,7 +484,7 @@ public class LevelEditorController : MonoBehaviour
         var runner = _runtimeBall.GetComponent<BallRunner>();
         if (runner == null)
         {
-            Debug.LogError("BallRuntimePrefab doit avoir un BallRunner.");
+            Debug.LogError("BallRuntimePrefab need a BallRunner.");
             return;
         }
         
@@ -515,30 +499,26 @@ public class LevelEditorController : MonoBehaviour
             }
         }
         
-        // --- compter les étoiles présentes ---
-        //int starsPresent = elementsParent.GetComponentsInChildren<StarPickup>(true).Length;
-
-        // règle: exactement 3 étoiles ?
         if (requireExactlyThreeStars)
         {
             if (starsPresent != 3)
             {
                 Debug.LogWarning($"The level must contain exactly 3 stars (currently {starsPresent}).");
-                return; // on empêche le test si la règle n'est pas respectée
+                return; 
             }
             _starsNeeded = 3;
         }
         else
         {
-            // sinon on exige simplement toutes celles placées
+            
             _starsNeeded = starsPresent;
         }
         _starsCollected = 0;
         
         ResolveTeleporters();
         
-        runner.StopRun();   // sécurité
-        runner.StartRun();  // ⇦ démarre VRAIMENT ici seulement
+        runner.StopRun();   
+        runner.StartRun();  
     }
 
     public void OnStopTestClicked()
@@ -560,26 +540,26 @@ public class LevelEditorController : MonoBehaviour
         _isPlaytesting = false;
         if (stopTestButton) stopTestButton.SetActive(false);
 
-        // Réactiver les étoiles (si tu avais déjà ce bloc, garde-le)
+        
         foreach (var star in elementsParent.GetComponentsInChildren<StarPickup>(true))
             star.gameObject.SetActive(true);
 
-        // Ré-activer les éléments cassés temporairement
+        
         foreach (var b in _brokenDuringTest)
             if (b) b.Restore();
         _brokenDuringTest.Clear();
         
-        // Remettre les Activable à l'état initial
+        
         foreach (var act in elementsParent.GetComponentsInChildren<Activable>(true))
             act.ResetRuntimeState();
 
-        // Ré-afficher les spawns si tu caches leurs renderers (comme on l'a fait avant)
+        
         foreach (var r in _hiddenSpawnRenderers)
             if (r) r.enabled = true;
         _hiddenSpawnRenderers.Clear();
     }
 
-    // Appelés par les éléments
+   
     public void PlaytestCollectStar(StarPickup s)
     {
         _starsCollected++;
@@ -616,14 +596,11 @@ public class LevelEditorController : MonoBehaviour
             _brokenDuringTest.Add(b);
     }
     
-    // état de pairing en cours
+    
     private string _pendingTelePairId = null;
     private Placeable _pendingTeleFirst = null;
 
-    // couleur des spawns déjà stockée
     
-
-    // couleur stable par ID (HSV)
     private Color ColorForPair(string id)
     {
         if (string.IsNullOrEmpty(id)) return Color.white;
@@ -641,7 +618,7 @@ public class LevelEditorController : MonoBehaviour
         foreach (var tel in elementsParent.GetComponentsInChildren<TeleporterElement>(true))
         {
             var plc = tel.GetComponent<Placeable>();
-            // Priorité: composant → sinon données
+            
             string pid = !string.IsNullOrEmpty(tel.pairId) ? tel.pairId
                 : (plc != null && plc.data != null ? plc.data.pairId : null);
 
@@ -651,8 +628,7 @@ public class LevelEditorController : MonoBehaviour
                 tel.ResetTint();
                 continue;
             }
-
-            // garde sync compo <-> data
+            
             tel.pairId = pid;
             if (plc != null && plc.data != null) plc.data.pairId = pid;
 
@@ -665,8 +641,7 @@ public class LevelEditorController : MonoBehaviour
             }
             list.Add(tel);
         }
-
-        // faire les couples
+        
         foreach (var kv in map)
         {
             var list = kv.Value;
@@ -678,13 +653,11 @@ public class LevelEditorController : MonoBehaviour
             else
             {
                 foreach (var t in list) t.paired = null;
-                Debug.LogWarning($"PairId {kv.Key}: {list.Count} téléporteur(s) (attendu: 2).");
+                Debug.LogWarning($"PairId {kv.Key}: {list.Count} téléporteur (attendu: 2).");
             }
         }
     }
     
-    // Supprime un téléporteur ET sa paire (données + objets)
-    // targetPlc = Placeable du téléporteur cliqué
     private void DeleteTeleporterPairAndData(Placeable targetPlc)
     {
         if (targetPlc == null) return;
@@ -692,24 +665,23 @@ public class LevelEditorController : MonoBehaviour
         var tel = targetPlc.GetComponent<TeleporterElement>();
         if (tel == null)
         {
-            // Ce n'est pas un téléporteur → suppression simple
+            
             if (targetPlc.data != null)
                 currentLevelData.elements.RemoveAll(e => e.guid == targetPlc.data.guid);
             Destroy(targetPlc.gameObject);
             return;
         }
-
-        // 1) Trouver l'ID de paire (priorité aux données)
+        
         string pid = targetPlc.data != null && !string.IsNullOrEmpty(targetPlc.data.pairId)
             ? targetPlc.data.pairId
             : tel.pairId;
 
-        // 2) Construire la liste des deux extrémités à supprimer
+      
         var toDelete = new List<Placeable> { targetPlc };
 
         if (!string.IsNullOrEmpty(pid))
         {
-            // Cherche l'autre extrémité par pairId
+            
             foreach (var p in elementsParent.GetComponentsInChildren<Placeable>(true))
             {
                 if (p == targetPlc) continue;
@@ -729,19 +701,19 @@ public class LevelEditorController : MonoBehaviour
         }
         else if (tel.paired != null)
         {
-            // Fallback : pas d'ID mais lien runtime
+            
             var otherPlc = tel.paired.GetComponent<Placeable>();
             if (otherPlc) toDelete.Add(otherPlc);
         }
 
-        // 3) Nettoie l'état de pairing en cours si besoin
+        
         if (_pendingTeleFirst != null && (toDelete.Contains(_pendingTeleFirst) || targetPlc == _pendingTeleFirst))
         {
             _pendingTeleFirst = null;
             _pendingTelePairId = null;
         }
 
-        // 4) Retire des données + détruit les objets
+        
         foreach (var plc in toDelete)
         {
             if (plc == null) continue;
@@ -751,8 +723,6 @@ public class LevelEditorController : MonoBehaviour
         }
     }
     
-    // Rotation 90° de l'objet sous la souris (si aucun preview en cours)
-    // Rotation 90° de l'objet sous la souris (si aucun preview en cours)
     private void TryRotateExistingAtCursor()
     {
         Vector2 p = editorCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -775,7 +745,7 @@ public class LevelEditorController : MonoBehaviour
         }
         if (target == null) return;
         
-        // si l’objet est autorisé mais n’a pas (ou plus) Rotatable → on le remet
+        
         if (IsRotatableKey(target.data?.prefabKey ?? target.name) &&
             target.GetComponent<Rotatable>() == null)
         {
@@ -786,7 +756,7 @@ public class LevelEditorController : MonoBehaviour
         if (rot != null)
         {
             rot.RotateStep();
-            // rien si pas de Rotatable => l’objet est non-rotatable
+            
         }
     }
     
@@ -794,18 +764,18 @@ public class LevelEditorController : MonoBehaviour
     {
         bool win = (_starsCollected >= _starsNeeded);
 
-        // Feedback (logs/panels)
+        
         if (win) OnPlaytestSuccess();
         else     OnPlaytestFailed("There are stars missing.");
 
-        // FX + shake
+        
         if (ball != null)
             FXManager.Instance?.PlayGoal(ball.transform.position);
-        Shake(0.25f, 0.35f); // petit tremblement
+        Shake(0.25f, 0.35f); 
         
         AudioManager.Instance?.PlayGoal();
 
-        // Retire la balle
+        
         if (ball != null)
         {
             ball.StopRun();
@@ -813,7 +783,7 @@ public class LevelEditorController : MonoBehaviour
             if (_runtimeBall == ball.gameObject) _runtimeBall = null;
         }
 
-        // Quitte proprement le mode test (restaure étoiles, éléments cassés/activables, UI, etc.)
+        
         EndPlaytestCommon();
     }
     
@@ -842,7 +812,7 @@ public class LevelEditorController : MonoBehaviour
         foreach (var act in elementsParent.GetComponentsInChildren<Activable>(true))
             act.ResetRuntimeState();
 
-        // réafficher les spawns
+        // réafficher le spawn
         foreach (var r in _hiddenSpawnRenderers) if (r) r.enabled = true;
         _hiddenSpawnRenderers.Clear();
 
@@ -864,11 +834,11 @@ public class LevelEditorController : MonoBehaviour
     
     public void LoadLevelData(LevelData data)
     {
-        // 1) clear scène et data
+        
         foreach (Transform c in elementsParent) Destroy(c.gameObject);
         currentLevelData = new LevelData { levelName = data.levelName, elements = new System.Collections.Generic.List<ElementData>() };
 
-        // 2) réinstancie
+        
         foreach (var e in data.elements)
         {
             if (!_prefabDict.TryGetValue(e.prefabKey, out var prefab) || prefab == null) {
@@ -883,11 +853,11 @@ public class LevelEditorController : MonoBehaviour
             int placeableLayer = LayerMask.NameToLayer(placeableLayerName);
             if (placeableLayer >= 0) SetLayerRecursively(go, placeableLayer);
 
-            // collider de secours si besoin
+            
             if (!go.GetComponentInChildren<Collider2D>()) go.AddComponent<BoxCollider2D>();
 
             var plc = go.GetComponent<Placeable>() ?? go.AddComponent<Placeable>();
-            // très important : assigner la même data (pour suppression/rotation/Save)
+            
             plc.data = new ElementData {
                 guid = string.IsNullOrEmpty(e.guid) ? System.Guid.NewGuid().ToString() : e.guid,
                 prefabKey = e.prefabKey,
@@ -901,8 +871,8 @@ public class LevelEditorController : MonoBehaviour
             if (e.prefabKey == "Teleporter")
             {
                 var tel = go.GetComponent<TeleporterElement>() ?? go.AddComponent<TeleporterElement>();
-                tel.pairId = e.pairId;              // << sync depuis les données
-                // Optionnel: teinte immédiate (ResolveTeleporters le fera aussi)
+                tel.pairId = e.pairId;              
+                
                 if (!string.IsNullOrEmpty(e.pairId))
                     tel.SetTint(ColorForPair(e.pairId));
             }
@@ -910,7 +880,7 @@ public class LevelEditorController : MonoBehaviour
             currentLevelData.elements.Add(plc.data);
         }
 
-        // 3) résoudre les téléporteurs (paire + couleur)
+        
         ResolveTeleporters();
     }
 

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class BreakableOnce : MonoBehaviour
 {
-    [Tooltip("Si actif, l'objet disparaît au premier contact de la balle.")]
+    [Tooltip("True = break on use; False = unbreakable.")]
     public bool breakOnUse = true;
 
-    [Tooltip("True = on cache et on restaure au Stop; False = on détruit réellement (perd l'état en éditeur).")]
+    [Tooltip("True = disable the object (and colliders) instead of destroying it.")]
     public bool disableInsteadOfDestroy = true;
 
     private bool _used;
@@ -18,7 +18,6 @@ public class BreakableOnce : MonoBehaviour
 
         if (disableInsteadOfDestroy)
         {
-            // Cache visuel + collision, et enregistre pour restauration au Stop
             foreach (var c in GetComponentsInChildren<Collider2D>(true)) c.enabled = false;
             foreach (var r in GetComponentsInChildren<Renderer>(true))   r.enabled = false;
             LevelEditorController.Instance?.RegisterTempDisabled(this);

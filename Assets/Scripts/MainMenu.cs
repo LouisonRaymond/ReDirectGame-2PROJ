@@ -45,7 +45,7 @@ public class MainMenu : MonoBehaviour
             if (panelToToggle == makeALevelWindow)
                 makeALevelWindow.GetComponentInChildren<LevelBrowser>(true)?.Refresh();
 
-            // Ajoute ici la logique spécifique à playWindow si besoin
+            
         }
 
         // AudioManager.Instance?.PlayUiClick();

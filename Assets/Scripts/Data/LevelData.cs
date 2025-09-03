@@ -7,11 +7,11 @@ public class ElementData {
     public string guid;
     public string prefabKey;
     public Vector2Int gridPos;
-    public int rotationSteps;   // 0..3
+    public int rotationSteps;   // 0 / 3
     public bool isBreakable;
     public bool isActivable;
     
-    public string pairId;   //teleporter par id data
+    public string pairId;   //teleporter par id
 }
 
 [Serializable]

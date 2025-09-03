@@ -1,4 +1,3 @@
-// Assets/Scripts/FX/FillScreenParticleEmitter.cs
 using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]
@@ -22,8 +21,7 @@ public class FillScreenParticleEmitter : MonoBehaviour
 #endif
         if (!cam) cam = Camera.main;
         if (!cam || !ps) return;
-
-        // important en 2D : rester à rotation nulle
+        
         transform.rotation = Quaternion.identity;
 
         float worldH = cam.orthographicSize * 2f + padding * 2f;

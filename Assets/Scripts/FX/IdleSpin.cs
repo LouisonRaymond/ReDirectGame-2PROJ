@@ -5,17 +5,17 @@ public class IdleSpin : MonoBehaviour
 {
     public enum SpinDirection { Clockwise, CounterClockwise }
 
-    [Header("Cible visuelle à tourner (laisse vide -> ce GO)")]
+    [Header("Objects to rotate")]
     public Transform target;
 
-    [Header("Paramètres")]
+    [Header("Parameters")]
     public SpinDirection direction = SpinDirection.Clockwise;
-    [Tooltip("Degrés/seconde (moyen ≈ 90, lent ≈ 30)")]
+    [Tooltip("Rotation Speed")]
     public float speed = 90f;
 
 #if UNITY_EDITOR
-    [Tooltip("Prévisualiser la rotation en mode Éditeur (hors Play)")]
-    public bool previewInEditor = false;   // <-- remplace l'ancien runInEditMode
+    [Tooltip("Show in editMode")]
+    public bool previewInEditor = false;   
 #endif
 
     void Reset()
@@ -30,8 +30,7 @@ public class IdleSpin : MonoBehaviour
         if (!Application.isPlaying && !previewInEditor) return;
 #endif
         if (!target) target = transform;
-
-        // En 2D, Z+ = anti-horaire. Horaire = valeur négative.
+        
         float signedSpeed = (direction == SpinDirection.Clockwise ? -speed : speed);
         target.Rotate(0f, 0f, signedSpeed * Time.deltaTime, Space.Self);
     }

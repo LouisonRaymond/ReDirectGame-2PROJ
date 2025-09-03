@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Activable : MonoBehaviour
 {
-    [Tooltip("Si vrai, l'objet n'agit pas au premier passage : il s'active, puis agira aux passages suivants.")]
+    [Tooltip("state")]
     public bool startsInactive = true;
 
-    [Header("Feedback visuel (facultatif)")]
+    [Header("Tint")]
     public bool tintWhenInactive = true;
     public float inactiveAlpha = 0.4f;
 
-    private bool _activated; // devient vrai après le premier passage
+    private bool _activated; 
     private SpriteRenderer[] _srs;
     private Color[] _initialColors;
 
@@ -18,27 +18,21 @@ public class Activable : MonoBehaviour
         _srs = GetComponentsInChildren<SpriteRenderer>(true);
         _initialColors = new Color[_srs.Length];
         for (int i = 0; i < _srs.Length; i++) _initialColors[i] = _srs[i].color;
-
-        // état visuel initial
+        
         if (startsInactive) SetInactiveVisual(true);
     }
-
-    /// <summary>
-    /// Retourne true si l'interaction doit avoir lieu maintenant.
-    /// Si l'objet est inactif, il s'active et retourne false (donc pas d'effet cette fois-ci).
-    /// </summary>
+    
     public bool AllowInteraction()
     {
         if (!startsInactive) return true;
         if (_activated) return true;
 
-        // 1er passage : on active et on bloque l'effet
+        
         _activated = true;
         SetInactiveVisual(false);
         return false;
     }
-
-    /// <summary> Appelé par l'éditeur quand on arrête le test pour remettre l'état. </summary>
+    
     public void ResetRuntimeState()
     {
         if (startsInactive)

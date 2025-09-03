@@ -4,10 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class LevelBrowser : MonoBehaviour
 {
-    [SerializeField] Transform content;          // parent des items
-    [SerializeField] LevelListItem itemPrefab;   // ton prefab d’item (avec bouton Play)
+    [SerializeField] Transform content;          
+    [SerializeField] LevelListItem itemPrefab;   
     [SerializeField] string levelEditorSceneName = "LevelEditor";
-    [SerializeField] GameObject emptyState;      // texte "Aucun niveau"
+    [SerializeField] GameObject emptyState;      
 
     List<GameObject> _spawned = new();
 
@@ -25,7 +25,7 @@ public class LevelBrowser : MonoBehaviour
         foreach (var li in levels)
         {
             var item = Instantiate(itemPrefab, content);
-            // ⬇️ on passe aussi le callback Play
+            
             item.Init(li, OnEditClicked, OnDeleteClicked, OnPlayClicked);
             _spawned.Add(item.gameObject);
         }
@@ -33,28 +33,28 @@ public class LevelBrowser : MonoBehaviour
 
     void OnEditClicked(LevelIO.LevelInfo info)
     {
-        LevelBridge.pathToLoad = info.fullPath;   // l’éditeur chargera ce fichier
-        LevelBridge.currentPath = info.fullPath;  // pour SaveOverwrite
+        LevelBridge.pathToLoad = info.fullPath;   
+        LevelBridge.currentPath = info.fullPath;  
         SceneManager.LoadScene(levelEditorSceneName);
     }
 
     void OnDeleteClicked(LevelIO.LevelInfo info)
     {
-        // Ici tu supprimes direct. Si tu veux une vraie confirmation, on peut brancher un Popup Oui/Non.
+        
         LevelIO.Delete(info.fullPath);
         Refresh();
     }
 
     void OnPlayClicked(LevelIO.LevelInfo info)
     {
-        // Lancer la PlayScene depuis un fichier disque (pas la campagne Resources)
+        
         PlayBridge.diskPathToLoad = info.fullPath;
         PlayBridge.levelResourceName = null;
-        PlayBridge.levelIndex = -1; // signale "hors campagne"
+        PlayBridge.levelIndex = -1; 
         SceneManager.LoadScene("PlayScene");
     }
 
-    // Bouton "Nouveau niveau"
+    
     public void OnNewLevelClicked()
     {
         LevelBridge.Clear();

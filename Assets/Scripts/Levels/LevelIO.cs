@@ -17,9 +17,9 @@ public static class LevelIO
     }
 
     public struct LevelInfo {
-        public string name;       // sans extension
-        public string fullPath;   // chemin complet
-        public DateTime modified; // tri/affichage
+        public string name;       
+        public string fullPath;   
+        public DateTime modified; 
         public long sizeBytes;
     }
 
@@ -38,7 +38,7 @@ public static class LevelIO
                 sizeBytes = fi.Length
             });
         }
-        // tri récent → ancien
+       
         list.Sort((a,b) => b.modified.CompareTo(a.modified));
         return list;
     }

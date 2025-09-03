@@ -5,16 +5,15 @@ using System.Linq;
 
 public class SettingsMenu : MonoBehaviour
 {
-    [Header("UI – Audio")]
+    [Header("UI Audio")]
     public Slider masterSlider;
     public Slider musicSlider;
     public Slider sfxSlider;
 
-    [Header("UI – Vidéo")]
+    [Header("UI Vidéo")]
     public TMP_Dropdown resolutionDropdown;
     public Toggle fullscreenToggle;
-
-    // liste unique par largeur/hauteur (sans doublons de fréquence)
+    
     Resolution[] _resolutionsWH;
     bool _updating;
 
@@ -23,7 +22,6 @@ public class SettingsMenu : MonoBehaviour
 
     void Awake()
     {
-        // Construit une liste unique par (width, height)
         _resolutionsWH = Screen.resolutions
             .Select(r => (r.width, r.height))
             .Distinct()
@@ -33,7 +31,6 @@ public class SettingsMenu : MonoBehaviour
 
     void Start()
     {
-        // --- Vidéo : Résolution + Fullscreen ---
         if (resolutionDropdown)
         {
             resolutionDropdown.ClearOptions();
@@ -54,12 +51,11 @@ public class SettingsMenu : MonoBehaviour
             Screen.fullScreen = savedFs;
             fullscreenToggle.isOn = savedFs;
         }
-
-        // --- Audio : synchronise les sliders avec AudioManager ---
+        
         SyncAudioUI();
         
 
-        // Brancher les events
+        
         if (resolutionDropdown) resolutionDropdown.onValueChanged.AddListener(SetResolution);
         if (fullscreenToggle)   fullscreenToggle.onValueChanged.AddListener(SetFullscreen);
         if (masterSlider)       masterSlider.onValueChanged.AddListener(SetMasterVolume);
@@ -75,8 +71,7 @@ public class SettingsMenu : MonoBehaviour
         if (musicSlider)        musicSlider.onValueChanged.RemoveListener(SetMusicVolume);
         if (sfxSlider)          sfxSlider.onValueChanged.RemoveListener(SetSfxVolume);
     }
-
-    // ---------- AUDIO ----------
+    
     void SyncAudioUI()
     {
         var am = AudioManager.Instance;
@@ -93,7 +88,7 @@ public class SettingsMenu : MonoBehaviour
     public void SetMusicVolume (float v){ if (_updating) return; AudioManager.Instance?.SetMusic (v); }
     public void SetSfxVolume   (float v){ if (_updating) return; AudioManager.Instance?.SetSfx   (v); }
 
-    // ---------- VIDEO ----------
+    
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
@@ -110,14 +105,14 @@ public class SettingsMenu : MonoBehaviour
         PlayerPrefs.Save();
     }
     
-    void OnEnable() => RefreshAudioUI(); // auto-sync à chaque ouverture
+    void OnEnable() => RefreshAudioUI(); 
 
     public void RefreshAudioUI()
     {
         var am = AudioManager.Instance; if (!am) return;
         _updating = true;
-        if (masterSlider) masterSlider.SetValueWithoutNotify(am.Master); // 0..1
-        if (sfxSlider)    sfxSlider.SetValueWithoutNotify(am.Sfx);       // 0..1
+        if (masterSlider) masterSlider.SetValueWithoutNotify(am.Master); 
+        if (sfxSlider)    sfxSlider.SetValueWithoutNotify(am.Sfx);       
         _updating = false;
     }
 

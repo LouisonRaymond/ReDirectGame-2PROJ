@@ -10,8 +10,8 @@ public class PlayLevelItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI label;
 
     [Header("Icons")]
-    [SerializeField] Image icon;     // ← ton icône “normal”
-    [SerializeField] GameObject lockGO; // ← l’icône cadenas (GameObject)
+    [SerializeField] Image icon;     
+    [SerializeField] GameObject lockGO; 
 
     int _index;
     Action<int> _onClick;
@@ -32,13 +32,13 @@ public class PlayLevelItem : MonoBehaviour
 
         if (cg) cg.alpha = locked ? 0.6f : 1f;
 
-        // 👉 toggle des visuels
-        if (icon)   icon.enabled = !locked;        // cache l’icône normale si verrouillé
-        if (lockGO) lockGO.SetActive(locked);      // montre le cadenas uniquement si verrouillé
+        
+        if (icon)   icon.enabled = !locked;        
+        if (lockGO) lockGO.SetActive(locked);      
     }
 
 #if UNITY_EDITOR
-    // Pour voir un état propre dans l’éditeur quand tu ouvres le prefab
+    
     void OnValidate()
     {
         if (!Application.isPlaying)

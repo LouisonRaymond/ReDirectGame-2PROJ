@@ -1,4 +1,3 @@
-// Assets/Scripts/UI/PopupService.cs
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ public class PopupService : MonoBehaviour
 {
     public static PopupService Instance { get; private set; }
 
-    [SerializeField] private PopupPanel popup;   // réf. au panel dans ton Canvas
+    [SerializeField] private PopupPanel popup;   
     
     struct Req {
         public string title, msg, actionText;
@@ -28,12 +27,7 @@ public class PopupService : MonoBehaviour
     }
 
     public bool IsOpen => popup && popup.gameObject.activeSelf;
-
-    /// <summary>
-    /// Affiche un popup. Si un popup est déjà ouvert:
-    ///  - replaceIfOpen=true  => remplace le contenu
-    ///  - replaceIfOpen=false => ignore l'appel
-    /// </summary>
+    
     public void Show(string title, string msg, PopupType type = PopupType.Info,
         float autoClose = 0f, bool replaceIfOpen = true)
     {
@@ -41,9 +35,9 @@ public class PopupService : MonoBehaviour
 
         if (!IsOpen || replaceIfOpen)
         {
-            popup.Show(title, msg, type, autoClose); // onClose pas nécessaire ici
+            popup.Show(title, msg, type, autoClose); 
         }
-        // sinon: on ignore
+        
     }
 
     public void Hide()
@@ -51,7 +45,6 @@ public class PopupService : MonoBehaviour
         if (IsOpen) popup.Hide();
     }
     
-    // NOUVEAU: message avec bouton
     public void ShowWithAction(string title, string msg, string actionText, Action onAction,
         PopupType type = PopupType.Info)
     {
@@ -84,8 +77,7 @@ public class PopupService : MonoBehaviour
         _showing = false;
         TryShowNext();
     }
-
-    // Helpers pratiques
+    
     public void Info(string t, string m, float auto = 0f, bool replaceIfOpen = true)
         => Show(t, m, PopupType.Info,    auto, replaceIfOpen);
 

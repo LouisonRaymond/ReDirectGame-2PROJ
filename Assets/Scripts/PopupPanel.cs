@@ -1,4 +1,3 @@
-// Assets/Scripts/UI/PopupPanel.cs
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,10 +9,10 @@ public enum PopupType { Info, Success, Warning, Error }
 public class PopupPanel : MonoBehaviour
 {
     [Header("Refs")]
-    public CanvasGroup layer;      // sur PopupLayer
-    public Image backdrop;         // Backdrop
-    public RectTransform panel;    // PopupPanel
-    public Image panelBG;          // PanelBG
+    public CanvasGroup layer;      
+    public Image backdrop;         
+    public RectTransform panel;    
+    public Image panelBG;          
     public TextMeshProUGUI title;
     public TextMeshProUGUI body;
     public Button closeButton;
@@ -27,14 +26,14 @@ public class PopupPanel : MonoBehaviour
     Coroutine _anim;
     System.Action _onClosed;
     
-             // ton panneau (fond)
+             
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI bodyText;
     
     
-    [Header("Action Button (optionnel)")]
-    public Button actionButton;          // ← drag ici un bouton “Suivant”
-    public TextMeshProUGUI actionLabel;  // ← son label (TMP)
+    [Header("Action Button")]
+    public Button actionButton;          
+    public TextMeshProUGUI actionLabel;  
     Action _onAction;
     float _autoClose;
     bool _showing;
@@ -57,8 +56,7 @@ public class PopupPanel : MonoBehaviour
         body.text  = b;
         
         HideActionButton();
-
-        // couleur d'accent simple via PanelBG
+        
         Color c = type switch
         {
             PopupType.Success => successColor,
@@ -81,14 +79,12 @@ public class PopupPanel : MonoBehaviour
 
     IEnumerator CoFadeIn(float autoClose)
     {
-        // état initial
         layer.alpha = 0f;
         layer.blocksRaycasts = true;
         layer.interactable = true;
 
         panel.localScale = Vector3.one * 0.9f;
-
-        // fade
+        
         float t = 0f;
         while (t < 0.15f)
         {
@@ -129,14 +125,13 @@ public class PopupPanel : MonoBehaviour
         _anim = null;
     }
     
-    // NOUVEAU: avec bouton d’action
     public void ShowWithAction(string title, string msg, PopupType type,
         string actionText, Action onAction,
         Action onClosed)
     {
         _onClosed = onClosed;
         _onAction = onAction;
-        _autoClose = 0f; // pas d’autoclose si bouton
+        _autoClose = 0f; 
         _showing = true;
 
         if (titleText) titleText.text = title;
@@ -164,7 +159,7 @@ public class PopupPanel : MonoBehaviour
 
     void OnActionClicked()
     {
-        var cb = _onAction; // éviter race
+        var cb = _onAction; 
         Close();
         cb?.Invoke();
     }

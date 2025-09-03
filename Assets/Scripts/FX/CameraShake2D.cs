@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class CameraShake2D : MonoBehaviour
 {
-    [Header("Default")]
+    [Header("Parameters")]
     public float defaultDuration = 0.25f;
     public float defaultMagnitude = 0.25f;
-    public float frequency = 28f; // lissage type perlin
+    public float frequency = 28f; 
 
     Vector3 _basePos;
     Coroutine _co;

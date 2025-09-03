@@ -42,29 +42,24 @@ public class TeleporterElement : MonoBehaviour, IBallInteractor
         }
 
         if (paired == null) return;
-
-        // FX + SFX d’ENTRÉE (au point actuel de la balle)
+        
         FXManager.Instance?.PlayTeleport(ball.transform.position, ball.dir);
-        AudioManager.Instance?.PlayTeleport(); // <-- entrée
-
-        // calcul de la sortie (léger offset)
+        AudioManager.Instance?.PlayTeleport(); 
+        
         Vector3 exit = paired.transform.position + (Vector3)(ball.dir * 0.20f);
-
-        // téléporte
+        
         ball.TeleportTo(exit);
-
-        // FX + SFX de SORTIE décalés d’1 frame pour ne pas "manger" l’entrée
+        
         StartCoroutine(PlayExitFxAndSfxNextFrame(ball.dir));
-
-        // anti ping-pong
+        
         ball.AddCooldownForHierarchy(transform, 0.15f);
         ball.AddCooldownForHierarchy(paired.transform, 0.15f);
     }
 
     private IEnumerator PlayExitFxAndSfxNextFrame(Vector2 dir)
     {
-        yield return null; // 1 frame plus tard
+        yield return null; 
         FXManager.Instance?.PlayTeleport(paired.transform.position, dir);
-        AudioManager.Instance?.PlayTeleport();    // <-- sortie
+        AudioManager.Instance?.PlayTeleport();    
     }
 }

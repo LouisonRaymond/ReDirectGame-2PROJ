@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class SlashLineElement : MonoBehaviour, IBallInteractor
 {
-    [Tooltip("Décalage de 90° (0..3) si ton sprite n'est pas aligné avec le monde.")]
+    [Tooltip("Rotation Offset of 90°")]
     public int rotationOffsetSteps = 0;
 
-    [Tooltip("Inverse la direction résultante (180°). Utile si gauche/droite sont inversées visuellement.")]
+    [Tooltip("Invert direction")]
     public bool invert180 = false;
 
     public void OnBallHit(BallRunner ball)
     {
         int steps = (Mathf.RoundToInt(transform.eulerAngles.z / 90f) + rotationOffsetSteps) & 3;
-        bool isSlash = (steps % 2 == 0); // 0,2 = "/", 1,3 = "\"
+        bool isSlash = (steps % 2 == 0); 
         Vector2 d = ball.dir;
         Vector2 nd;
         

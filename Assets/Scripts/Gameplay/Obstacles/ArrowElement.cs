@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ArrowElement : MonoBehaviour, IBallInteractor
 {
-    [Tooltip("Décalage en pas de 90° si ton sprite ne pointe pas naturellement vers le haut.")]
+    [Tooltip("Offset to apply to the rotation in steps of 90°")]
     public int rotationOffsetSteps = 0;
 
     public void OnBallHit(BallRunner ball)

@@ -1,4 +1,3 @@
-// Assets/Scripts/Audio/AudioManager.cs
 using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections.Generic;
@@ -8,46 +7,43 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     [Header("Mixer")]
-    public AudioMixer mixer;                     // assigner ton AudioMixer
-    public AudioMixerGroup musicGroup;           // route musique
-    public AudioMixerGroup sfxGroup;             // route effets
+    public AudioMixer mixer;                     
+    public AudioMixerGroup musicGroup;           
+    public AudioMixerGroup sfxGroup;             
     
-    [Header("Gameplay Clips")]
-    public AudioClip sfxHit;       // rebond / changement de direction
-    public AudioClip sfxTeleport;  // tp entrée/sortie
-    public AudioClip sfxGoal;      // endpoint
-    public AudioClip sfxFail;      // sortie écran / échec
-
-    // Noms des paramètres exposés dans le mixer (Exposed Parameters)
+    [Header("Clips")]
+    public AudioClip sfxHit;       
+    public AudioClip sfxTeleport;  
+    public AudioClip sfxGoal;      
+    public AudioClip sfxFail;      
+    
     const string PAR_MASTER = "SoundVolume";
     const string PAR_MUSIC  = "MusicVol";
     const string PAR_SFX    = "EffectsVol";
 
-    // PlayerPrefs keys
+    
     const string KEY_MASTER = "vol_master";
     const string KEY_MUSIC  = "vol_music";
     const string KEY_SFX    = "vol_sfx";
 
-    [Header("Music/SFX sources")]
-    public AudioSource musicSource;              // une source musique
-    [Range(1,12)] public int sfxVoices = 6;      // pool SFX
+    [Header("Music/SFX")]
+    public AudioSource musicSource;              
+    [Range(1,12)] public int sfxVoices = 6;      
     List<AudioSource> sfxPool;
 
     [Header("UI Clips")]
     public AudioClip sfxUiClick;
     public AudioClip sfxUiHover;
 
-    // caches linéaires 0..1
+   
     float _master = 0.8f, _music = 0.8f, _sfx = 1f;
 
     void Awake()
     {
-        // Singleton + persistance
         if (Instance && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        // Prépare sources
+        
         if (!musicSource) {
             musicSource = gameObject.AddComponent<AudioSource>();
             musicSource.loop = true;
@@ -63,13 +59,11 @@ public class AudioManager : MonoBehaviour
                 sfxPool.Add(a);
             }
         }
-
-        // Charge et applique les volumes sauvegardés
+        
         LoadVolumes();
         ApplyVolumesToMixer();
     }
-
-    // --- volumes (0..1 linéaire stocké dans prefs) ---
+    
     public float Master => _master;
     public float Music  => _music;
     public float Sfx    => _sfx;
@@ -103,15 +97,13 @@ public class AudioManager : MonoBehaviour
 
     static float LinearToDb(float v)
     {
-        // 0 → -80 dB, 1 → 0 dB
         return Mathf.Log10(Mathf.Max(v, 0.0001f)) * 20f;
     }
-
-    // --- SFX helpers ---
+    
     public void PlaySfx(AudioClip clip, float volume = 1f, float pitchMin = 0.98f, float pitchMax = 1.02f)
     {
         if (!clip || sfxPool == null || sfxPool.Count == 0) return;
-        // cherche une voix libre
+        
         foreach (var a in sfxPool)
         {
             if (!a.isPlaying)
@@ -121,13 +113,12 @@ public class AudioManager : MonoBehaviour
                 return;
             }
         }
-        // fallback: première voix
+        
         var f = sfxPool[0];
         f.pitch = Random.Range(pitchMin, pitchMax);
         f.PlayOneShot(clip, volume);
     }
     
-    // --- dans AudioManager ---
     public void PlayMusic(AudioClip clip, bool loop = true, float fade = 0.35f)
     {
         if (!musicSource) return;
@@ -138,7 +129,7 @@ public class AudioManager : MonoBehaviour
     System.Collections.IEnumerator CoPlayMusic(AudioClip clip, bool loop, float fade)
     {
         float start = musicSource.volume;
-        // fade out
+        
         for (float t=0; t<fade; t+=Time.unscaledDeltaTime)
         {
             musicSource.volume = Mathf.Lerp(start, 0f, t/fade);
@@ -149,7 +140,7 @@ public class AudioManager : MonoBehaviour
         musicSource.clip = clip;
         musicSource.loop = loop;
         if (clip) musicSource.Play();
-        // fade in
+       
         for (float t=0; t<fade; t+=Time.unscaledDeltaTime)
         {
             musicSource.volume = Mathf.Lerp(0f, 1f, t/fade);

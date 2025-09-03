@@ -1,4 +1,3 @@
-// Assets/Scripts/UI/NamePromptPanel.cs
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -6,7 +5,7 @@ using TMPro;
 public class NamePromptPanel : MonoBehaviour
 {
     [Header("Refs")]
-    public CanvasGroup layer;         // sur NamePromptLayer
+    public CanvasGroup layer;         // Layer
     public RectTransform panel;       // Panel
     public TextMeshProUGUI title;     // Title
     public TMP_InputField input;      // Input
@@ -33,7 +32,7 @@ public class NamePromptPanel : MonoBehaviour
             input.text = defaultName ?? "";
             input.onValueChanged.RemoveAllListeners();
             input.onValueChanged.AddListener(OnValueChanged);
-            OnValueChanged(input.text);  // active/désactive OK
+            OnValueChanged(input.text);  
         }
 
         gameObject.SetActive(true);

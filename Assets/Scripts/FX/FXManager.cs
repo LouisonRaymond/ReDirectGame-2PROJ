@@ -7,11 +7,11 @@ public class FXManager : MonoBehaviour
     public static FXManager Instance { get; private set; }
 
     [Header("Prefabs")]
-    public ParticleSystem hitFXPrefab;      // FX_Spark
-    public ParticleSystem teleportFXPrefab; // optionnel
-    public ParticleSystem goalFXPrefab;     // optionnel
+    public ParticleSystem hitFXPrefab;      
+    public ParticleSystem teleportFXPrefab; 
+    public ParticleSystem goalFXPrefab;     
 
-    [Header("Pool")]
+    [Header("Sound Pool")]
     public int initialPoolPerPrefab = 6;
 
     private readonly Dictionary<ParticleSystem, Queue<ParticleSystem>> _pools = new();
@@ -20,8 +20,7 @@ public class FXManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
-
-        // Pré-création (facultatif)
+        
         Prewarm(hitFXPrefab);
         if (teleportFXPrefab) Prewarm(teleportFXPrefab);
         if (goalFXPrefab) Prewarm(goalFXPrefab);
@@ -60,8 +59,7 @@ public class FXManager : MonoBehaviour
         go.SetActive(true);
         ps.Clear(true);
         ps.Play(true);
-
-        // Remise au pool après durée
+        
         StartCoroutine(ReturnAfter(ps, TotalDuration(ps)));
         return ps;
     }
@@ -72,13 +70,12 @@ public class FXManager : MonoBehaviour
         if (ps != null)
         {
             ps.gameObject.SetActive(false);
-            // remet dans le bon pool
+            
             foreach (var kv in _pools)
             {
                 if (kv.Key != null && ps.main.startSpeed.mode == kv.Key.main.startSpeed.mode) { }
             }
-            // simple: on retrouve via prefab référence stockée
-            // (pour rester simple, on stocke la prefab via un component ci-dessous)
+            
             var tag = ps.GetComponent<PoolTag>();
             var prefabRef = tag ? tag.prefabRef : hitFXPrefab;
             if (!_pools.ContainsKey(prefabRef)) _pools[prefabRef] = new Queue<ParticleSystem>();
@@ -94,12 +91,11 @@ public class FXManager : MonoBehaviour
             life = m.startLifetime.constantMax;
         else if (m.startLifetime.mode == ParticleSystemCurveMode.Constant)
             life = m.startLifetime.constant;
-        else life = m.duration; // fallback
+        else life = m.duration; 
 
         return m.duration + life + 0.1f;
     }
-
-    // API conviviale
+    
     public void PlayHit(Vector3 pos, Vector2 dir)
     {
         float angle = DirToAngle(dir);
@@ -140,7 +136,6 @@ public class FXManager : MonoBehaviour
     }
 }
 
-// Tag pour connaître la prefab d'origine (pool)
 public class PoolTag : MonoBehaviour
 {
     public ParticleSystem prefabRef;

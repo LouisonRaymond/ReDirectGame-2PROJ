@@ -27,19 +27,17 @@ public class BallRunner : MonoBehaviour
     void FixedUpdate()
     {
         if (!_running) return;
-
-        // prochain point
+        
         Vector2 next = _rb.position + dir * (speed * Time.fixedDeltaTime);
-
-        // verrouille l'axe perpendiculaire au mouvement
-        if (Mathf.Abs(dir.x) > 0.5f)       // horizontal -> force Y sur la ligne
+        
+        if (Mathf.Abs(dir.x) > 0.5f)       
             next.y = RoundToLane(_rb.position.y);
-        else                               // vertical -> force X sur la colonne
+        else                               
             next.x = RoundToLane(_rb.position.x);
 
         _rb.MovePosition(next);
 
-        // cooldown anti-retrigger (inchangé)
+        
         if (_cooldown.Count > 0)
         {
             var keys = new List<Collider2D>(_cooldown.Keys);
@@ -50,7 +48,7 @@ public class BallRunner : MonoBehaviour
             }
         }
 
-        // sortie d'écran (tolérante)
+        
         if (!_notifiedEnd)
         {
             var cam = Camera.main;
@@ -65,7 +63,7 @@ public class BallRunner : MonoBehaviour
 
                     PlaySceneController.Instance?.OnBallOutOfBounds(this);
                     LevelEditorController.Instance?.OnBallOutOfBounds(this);
-                    enabled = false; // coupe tout de suite
+                    enabled = false; 
                 }
             }
         }
@@ -83,19 +81,18 @@ public class BallRunner : MonoBehaviour
             _cooldown[other] = 0.05f;
         }
     }
-
-    // Contrôle
+    
     public void StartRun()
     {
         dir = Vector2.down;
         _notifiedEnd = false;
         _running = true;
         enabled = true;
-        SnapToAxisCenter(); // démarre bien centré
+        SnapToAxisCenter(); 
     }
     public void StopRun()   { _running = false; }
 
-    // Helpers
+    
     public void SetDirection(Vector2 newDir)
     {
         if (Mathf.Abs(newDir.x) > Mathf.Abs(newDir.y))
@@ -103,7 +100,7 @@ public class BallRunner : MonoBehaviour
         else
             dir = new Vector2(0f, Mathf.Sign(newDir.y));
 
-        SnapToAxisCenter(); // ← important
+        SnapToAxisCenter(); 
     }
 
     public void TeleportTo(Vector3 worldPos)
@@ -112,15 +109,14 @@ public class BallRunner : MonoBehaviour
         SnapToAxisCenter();
     }
     
-    // Ajoute/force un cooldown pour un collider donné
+    
     public void AddColliderCooldown(Collider2D col, float seconds)
     {
         if (col == null) return;
         if (_cooldown.ContainsKey(col)) _cooldown[col] = Mathf.Max(_cooldown[col], seconds);
         else _cooldown[col] = seconds;
     }
-
-// Ajoute un cooldown à TOUS les colliders d'un transform (root + enfants)
+    
     public void AddCooldownForHierarchy(Transform root, float seconds)
     {
         if (root == null) return;
@@ -128,20 +124,20 @@ public class BallRunner : MonoBehaviour
         foreach (var c in cols) AddColliderCooldown(c, seconds);
     }
     
-    [SerializeField] private float viewportMargin = 0.05f; // tolérance
+    [SerializeField] private float viewportMargin = 0.05f; 
     private bool _notifiedEnd = false;
     
-    [SerializeField] public float cellSize = 1f;   // même valeur que ton éditeur/jeu
-    [SerializeField] private float snapTolerance = 0.03f; // marge pour snap "dur"
+    [SerializeField] public float cellSize = 1f;   
+    [SerializeField] private float snapTolerance = 0.03f; 
 
     float RoundToLane(float v) => Mathf.Round(v / cellSize) * cellSize;
 
     void SnapToAxisCenter()
     {
         var p = _rb.position;
-        if (Mathf.Abs(dir.x) > 0.5f)       // on va à gauche/droite
+        if (Mathf.Abs(dir.x) > 0.5f)       
             p.y = RoundToLane(p.y);
-        else                               // on va en haut/bas
+        else                               
             p.x = RoundToLane(p.x);
         _rb.position = p;
     }
