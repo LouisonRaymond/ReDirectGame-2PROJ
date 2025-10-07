@@ -1,0 +1,15 @@
+1-Telecharger le fichier ZIP aller dans son dossier telechargement.
+
+2-Cliquer droit sur le fichier extraire tout 
+
+3-Ouvrir le fichier qui apparait 
+
+4-Aller dans le dossier build
+
+5-Cliquer sur RedirectGame 2Proj 
+
+6-Plus que a Jouer
+
+7-Clique Droit pour tourner les elements dans l'editeur de niveaux ou dans les niveaux jouable.
+
+(Lancement Uniquement Posibble Via Windows)
